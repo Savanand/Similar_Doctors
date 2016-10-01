@@ -8,20 +8,27 @@ import java.util.stream.*;
 
 public class Solution {
   private static List<Doctor> Doctors = Arrays.asList(
-      new Doctor("Steve",95112, "Bone", 1),
-      new Doctor("Todd",95112, "Bone", 2),
+      new Doctor("Steve",95112, "Bone", 3),
+      new Doctor("Todd",95117, "Bone", 2),
       new Doctor("Kim",95112, "Bone", 5),
       new Doctor("Joe",95111, "Teeth", 2),
-      new Doctor("Cindy",95113, "Bone", 4),
-      new Doctor("Mark",95112, "Bone", 3),
+      new Doctor("Cindy",95110, "Bone", 4),
+      new Doctor("Mark",95111, "Bone", 3),
       new Doctor("Mike",95112, "Heart", 1),
       new Doctor("George",95113, "Heart", 2),
       new Doctor("Jim",95114, "Heart", 4),
       new Doctor("Chuck",95114, "Surgen", 5),
       new Doctor("Jorje", 95110,"Surgen", 5),
       new Doctor("Jane",95111, "Teeth", 1),
-      new Doctor("Kim", 95112, "Teeth", 3)
-    );
+      new Doctor("Kim", 95112, "Teeth", 3),
+      new Doctor("Mike",95112, "Heart", 1),
+      new Doctor("Lara",95118, "Heart", 2),
+      new Doctor("Maya",95120, "Heart", 4),
+      new Doctor("Hector",95125, "Surgen", 5),
+      new Doctor("Jay", 95600,"Surgen", 5),
+      new Doctor("Rose",93001, "Teeth", 1),
+      new Doctor("Mak", 91302, "Teeth", 3)
+		  );
 
   public static void main(String[] args) throws IOException {
     //  oldJavaWay();
@@ -60,6 +67,18 @@ public class Solution {
 	  //  List<Doctor> olderDoctors = Doctors.stream().filter(u -> (u.zip ==zip)).collect(Collectors.toList());
 	  //  printResults("New way older Doctors", olderDoctors);
 	    
+	  	/* Search result Assumptions- 
+	  	 * Similar Doctors==
+	  	 * +/-2 zip codes(Location)
+	  	 * Specialty exact
+	  	 * rating greater than equal to >=
+	  	 * 
+	  	 * 
+	  	 * Priority Doctors-
+	  	 * Greater rating doctors first
+	  	 
+	  			
+	  */
 	    Predicate<Doctor> zipPredicate = u -> (u.zip+2>=zip);
 	    Predicate<Doctor> specialityPredicate = u -> (u.speciality ==speciality);
 	    Predicate<Doctor> ratingPredicate = u -> (u.rating>=rating);
@@ -72,6 +91,8 @@ public class Solution {
 	    List<Doctor> olderDoctors = Doctors.stream().filter(fullPredicate)
 	            .collect(Collectors.toList());
 
+	    
+	    
 	    
 	    //olderDoctors.sort(Comparator.comparing(a -> a.rating)); for ascending order of rating 
 	   olderDoctors.sort(byReverseRating);
