@@ -11,20 +11,21 @@ public class Solution {
 /*
  * Doctor is a list of doctors manually added to the collection List
  */
-  private static List<Doctor> Doctors = Arrays.asList(
+  private List<Doctor> Doctors = Arrays.asList(
       new Doctor("Steve",95112, "Bone", 3),
+      new Doctor("John",95112, "Lung", 5),
       new Doctor("Todd",95117, "Bone", 2),
       new Doctor("Kim",95112, "Bone", 5),
       new Doctor("Joe",95111, "Teeth", 2),
       new Doctor("Cindy",95110, "Bone", 4),
       new Doctor("Mark",95111, "Bone", 3),
-      new Doctor("Mike",95112, "Heart", 1),
+      new Doctor("Mike",95112, "Heart", 5),
       new Doctor("George",95113, "Heart", 2),
       new Doctor("Jim",95114, "Heart", 4),
       new Doctor("Chuck",95114, "Surgen", 5),
       new Doctor("Jorje", 95110,"Surgen", 5),
       new Doctor("Jane",95111, "Teeth", 1),
-      new Doctor("Ron", 95113, "Bone", 3),
+      new Doctor("Ron", 95009, "Bone", 3),
       new Doctor("Mike",95114, "Bone", 4),
       new Doctor("Lara",95118, "Heart", 2),
       new Doctor("Maya",95120, "Heart", 4),
@@ -33,8 +34,9 @@ public class Solution {
       new Doctor("Rose",93001, "Teeth", 1),
       new Doctor("Mak", 91302, "Teeth", 3)
 		  );
-
-  public static void main(String[] args) throws IOException {
+  private List<Doctor> doctorDisplay;
+  
+ /* public static void main(String[] args) throws IOException {
     //  oldJavaWay();
   /*BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
       String currLine=br.readLine();
@@ -63,22 +65,30 @@ public class Solution {
 	   * 
 	   */
 	  
-	  newGetResults(95112, "Bone", 2);
+	//  newGetResults(95112, "Bone", 2);
 	  
 	  
 	  
 	// newGetResults(zip, speciality, rating);
-  }
+ // }
+
+public List<Doctor> getDoctorDisplay() {
+	return doctorDisplay;
+}
+
+public void setDoctorDisplay(List<Doctor> doctorDisplay) {
+	this.doctorDisplay = doctorDisplay;
+}
 
 /*
   private static void getResults(int zip, String speciality, int rating) {
-    List<Doctor> olderDoctors = Doctors.stream().filter(u -> (u.zip ==zip)).collect(Collectors.toList());
-    printResults("New way older Doctors", olderDoctors);
+    List<Doctor> doctorDisplay = Doctors.stream().filter(u -> (u.zip ==zip)).collect(Collectors.toList());
+    printResults("New way older Doctors", doctorDisplay);
   }
 */
-  private static void newGetResults(int zip, String speciality, int rating) {
-	  //  List<Doctor> olderDoctors = Doctors.stream().filter(u -> (u.zip ==zip)).collect(Collectors.toList());
-	  //  printResults("New way older Doctors", olderDoctors);
+  public void newGetResults(int zip, String speciality, int rating) {
+	  //  List<Doctor> doctorDisplay = Doctors.stream().filter(u -> (u.zip ==zip)).collect(Collectors.toList());
+	  //  printResults("New way older Doctors", doctorDisplay);
 	    
 	  	/* Search result Assumptions- 
 	  	 * Similar Doctors==
@@ -93,41 +103,46 @@ public class Solution {
 	  	 
 	  			
 	  */
-	    Predicate<Doctor> zipPredicate = u -> (u.zip+2>=zip || zip<u.zip-2); // returns location +-2 zips
+	    Predicate<Doctor> zipPredicate = u -> (u.zip+2>=zip && zip+2>=u.zip); // returns location +-2 zips
 	    Predicate<Doctor> specialityPredicate = u -> (u.speciality ==speciality);
 	    Predicate<Doctor> ratingPredicate = u -> (u.rating>=rating);
 	    
-	    Predicate<Doctor> fullPredicate = zipPredicate.and(specialityPredicate).and(ratingPredicate);
+	    Predicate<Doctor> fullPredicate=null; 
+	    if(speciality!=null){
+	    fullPredicate = zipPredicate.and(specialityPredicate).and(ratingPredicate);
 // this full predicate is combination of all three predicates before it
-	    
+	    }
+	    else{
+	    	fullPredicate = zipPredicate.and(ratingPredicate);	
+	    }
 	    
 	    // comparator for reverse rating
 	   Comparator<Doctor> byReverseRating = (f1, f2) -> Long.compare(f2.getRating(), f1.getRating());
 
 	    // applying full predicate
 	    
-	    List<Doctor> olderDoctors = Doctors.stream().filter(fullPredicate)
+	    doctorDisplay = Doctors.stream().filter(fullPredicate)
 	            .collect(Collectors.toList());
 
 	    
 	    
 	    
-	    //olderDoctors.sort(Comparator.comparing(a -> a.rating)); for ascending order of rating 
-	   olderDoctors.sort(byReverseRating);
-	   // olderDoctors.sort((f1, f2) -> Long.compare(f2.getRating(), f1.getRating())); // for descending order of rating
+	    //doctorDisplay.sort(Comparator.comparing(a -> a.rating)); for ascending order of rating 
+	   doctorDisplay.sort(byReverseRating);
+	   // doctorDisplay.sort((f1, f2) -> Long.compare(f2.getRating(), f1.getRating())); // for descending order of rating
 	    
 	    
-	    printResults("New way older Doctors", olderDoctors);
+	 //   printResults("Displaying Doctors: ", doctorDisplay);
 	    
 	    
 	  }
  
-  private static void printResults(String type, List<Doctor> Doctors) {
+  public void printResults() {
     
 	// printing doctors  
-	  System.out.println(type + ":");
+	  System.out.println("Displaying Similar Doctors:\n");
 
-    Doctors.forEach(u -> System.out.println("\t" + u));
+    doctorDisplay.forEach(u -> System.out.println("\t" + u));
 
     System.out.println();
   }
