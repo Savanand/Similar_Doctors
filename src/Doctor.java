@@ -1,5 +1,11 @@
 
-
+/*
+ * This is doctor class having 4 properties
+ * Name- Name of the doctor
+ * Zip- Location of doctor
+ * Specialty- Specialty of the doctor
+ * Rating- Rating of the doctor based on 5 star rating system
+ */
 public class Doctor {
 
 		String name;
